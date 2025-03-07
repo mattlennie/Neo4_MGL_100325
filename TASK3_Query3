@@ -1,0 +1,2 @@
+match (e:Employee)-[S:SOD_VIOLATION]-()
+return e,S
