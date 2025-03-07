@@ -1,0 +1,4 @@
+match (e1:Employee {Role:"Dispensing_Chemist"})
+match (e2:Employee {Role:"Prescribing_Doctor"})
+match (e1)-[TC:IS_FRIENDS_WITH]-(e2)
+return e1,e2,TC
