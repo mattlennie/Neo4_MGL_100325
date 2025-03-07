@@ -1,0 +1,2 @@
+MATCH path = (e:Employee)-[:REPORTS_TO]->(b:Employee {name: "Darth Vader"})
+RETURN e
