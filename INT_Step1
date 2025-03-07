@@ -1,0 +1,9 @@
+CREATE CONSTRAINT unique_employee_name IF NOT EXISTS
+FOR (e:Employee)
+REQUIRE e.name IS UNIQUE;
+
+load csv with headers from "http://localhost:11001/project-d8c7d57f-0292-4fe3-9f21-801a30ae2004/employee-and-their-boss_Base.csv" as row
+merge (e:Employee {name:(row.`employee name`)})
+merge (b:Employee {name:(row.`has boss`)})
+set b.IS_BOSS=true
+merge (e)-[:REPORTS_TO]->(b)
