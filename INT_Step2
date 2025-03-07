@@ -1,0 +1,4 @@
+load csv with headers from "http://localhost:11001/project-d8c7d57f-0292-4fe3-9f21-801a30ae2004/Employees_and_friends.csv" as row
+merge (e:Employee{name:(row.`employee name`)})
+merge (f:Employee{name:(row.`is friends with`)})
+merge (e)-[:IS_FRIENDS_WITH]-(f)
