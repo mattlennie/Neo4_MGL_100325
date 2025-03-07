@@ -1,0 +1,3 @@
+match (e:Employee{name:"Kip"})-[:IS_FRIENDS_WITH]->(e2:Employee)
+where e.name="Kip"
+return e, e2
