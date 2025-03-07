@@ -1,0 +1,22 @@
+match (n) detach delete n;
+load csv with headers from "http://localhost:11001/project-d8c7d57f-0292-4fe3-9f21-801a30ae2004/employee-and-their-boss_Edited.csv" as row
+merge (e:Employee {name:(row.`employee name`)})
+merge (b:Employee {name:(row.`has boss`)})
+set b.is_boss=true
+merge (d:Department {name:(row.department)})
+merge (r:Role {name:(row.role)}) 
+FOREACH (ignoreMe in CASE WHEN (row.role2) is not null THEN [1] ELSE [] END |MERGE (r2:role2 {Name:row.role2}) merge (e)-[HR2:HAS_ROLE2]->(r2))
+merge (e)-[RT:REPORTS_TO]->(b)
+merge (e)-[HR:HAS_ROLE]->(r)
+merge (r)-[RD:IS_IN_DEPT]->(d)
+SET
+e.Department = row.department,
+e.Role = row.role,
+e.Role2 = row.role2
+FOREACH (ignoreMe IN CASE WHEN e.Role = "AP" AND e.Role2 = "Supplier_management" THEN [1] ELSE [] END | MERGE (e)-[:SOD_VIOLATION {role1: e.Role, role2: e.Role2}]->(e))
+FOREACH (ignoreMe IN CASE WHEN e.Role = "Prescribing_Doctor" AND e.Role2 = "Dispensing_Chemist" THEN [1] ELSE [] END | MERGE (e)-[:SOD_VIOLATION {role1: e.Role, role2: e.Role2}]->(e));
+
+load csv with headers from "http://localhost:11001/project-d8c7d57f-0292-4fe3-9f21-801a30ae2004/Employees_and_friends.csv" as row
+merge (e:Employee {name:(row.`employee name`)})
+merge (f:Employee {name:(row.`is friends with`)})
+merge (e)-[g:IS_FRIENDS_WITH]-(f)
