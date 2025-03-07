@@ -1,0 +1,4 @@
+match (e:Employee)-[R:REPORTS_TO]-(b:Employee{name:"Jacob"})
+optional match (e)-[I:IS_FRIENDS_WITH]->(b)
+where e is null
+return distinct e.name
