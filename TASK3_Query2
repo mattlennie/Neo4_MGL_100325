@@ -1,5 +1,5 @@
-match (e1:Employee {Role:"Dispensing_Chemist"})
-match (e2:Employee {Role:"Prescribing_Doctor"})
-match (r1:Role)
-match (e1)-[TC:IS_FRIENDS_WITH]-(e2)
-return e1,e2,TC,r1
+MATCH (e1:Employee {Role:"Dispensing_Chemist"})-[FR:IS_FRIENDS_WITH]-(e2:Employee {Role:"Prescribing_Doctor"})	
+MATCH (e1)-[HR:HAS_ROLE]->(r1:Role)	
+MATCH (e2)-[HR2:HAS_ROLE]->(r2:Role)	
+RETURN e1, e2, HR, r1, HR2, r2, FR	
+
